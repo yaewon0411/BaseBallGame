@@ -2,18 +2,16 @@ package game.state;
 
 import game.BaseballGame;
 import game.state.difficulty.DifficultyMode;
-import game.state.difficulty.DifficultyState;
+import user.User;
 import util.CustomDesign;
 
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 public class MenuState implements GameState {
     private static MenuState menuState;
     private Scanner sc;
 
-    private boolean isMainMenuSelected = false;
 
     private MenuState(){
     }
@@ -30,10 +28,10 @@ public class MenuState implements GameState {
      *
      * @param baseballGame 야구 숫자 게임
      */
-    public void handle(BaseballGame baseballGame){
+    public void handle(BaseballGame baseballGame, User user){
         sc = new Scanner(System.in);
         int option = validMainMenuInput();
-        switchStatus(option, baseballGame);
+        switchStatus(option, baseballGame, user);
     }
 
 
@@ -42,42 +40,47 @@ public class MenuState implements GameState {
      * @return 유효한 옵션 값
      */
     public int validMainMenuInput(){
+        int option = 0;
         while(true) {
             CustomDesign.printMainMenu();
             try {
                 //옵션 입력
-                int option = sc.nextInt();
+                option = sc.nextInt();
 
                 //유효한 옵션이 아닌 경우
                 if(option != 1 && option!=2 && option!=3) throw new InputMismatchException();
 
-                return option;
+               break;
 
             } catch (InputMismatchException e) { //정수로 변환할 수 없는 경우
                 System.out.println(CustomDesign.ANSI_RED + "유효한 옵션 번호를 입력해주세요" + CustomDesign.ANSI_RESET);
                 continue;
             }
         }
+        return option;
     }
 
-    public void validDifficultyModeInput(BaseballGame baseballGame){
+    public void validDifficultyModeInput(BaseballGame baseballGame, User user){
+        DifficultyMode difficultyMode;
         while(true) {
-            CustomDesign.printMainMenu();
+            CustomDesign.printDifficultyMenu();
             try {
                 //옵션 입력
                 int option = sc.nextInt();
 
                 //유효한 옵션인지 확인
-                DifficultyMode difficultyMode = DifficultyMode.getDifficultyMode(option);
+                difficultyMode = DifficultyMode.findByOption(option);
 
-                //난이도에 따른 게임 로직 실행
-                baseballGame.nextStep(new RunState(difficultyMode));
+                break;
 
             } catch (InputMismatchException | IllegalArgumentException e) { //정수로 변환할 수 없는 경우
                 System.out.println(CustomDesign.ANSI_RED + "유효한 옵션 번호를 입력해주세요" + CustomDesign.ANSI_RESET);
                 continue;
             }
         }
+        System.out.println("난이도 선택 완료");
+        //난이도에 따른 게임 로직 실행
+        baseballGame.nextStep(new RunState(difficultyMode));
     }
 
     /**
@@ -90,10 +93,10 @@ public class MenuState implements GameState {
      * @param option 유효한 옵션 번호
      * @param baseballGame 야구 숫자 게임
      */
-    public void switchStatus(int option, BaseballGame baseballGame){
+    public void switchStatus(int option, BaseballGame baseballGame, User user){
         switch(option){
-            case 1: validDifficultyModeInput(baseballGame);
-            case 2: baseballGame.nextStep(new RecordState());
+            case 1: validDifficultyModeInput(baseballGame, user);break;
+            case 2: baseballGame.nextStep(new RecordState()); break;
             case 3: baseballGame.nextStep(new ExitState());
         }
     }

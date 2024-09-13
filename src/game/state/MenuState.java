@@ -1,15 +1,19 @@
 package game.state;
 
 import game.BaseballGame;
+import game.state.difficulty.DifficultyMode;
 import game.state.difficulty.DifficultyState;
 import util.CustomDesign;
 
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuState implements GameState {
     private static MenuState menuState;
     private Scanner sc;
+
+    private boolean isMainMenuSelected = false;
 
     private MenuState(){
     }
@@ -28,7 +32,7 @@ public class MenuState implements GameState {
      */
     public void handle(BaseballGame baseballGame){
         sc = new Scanner(System.in);
-        int option = validInput();
+        int option = validMainMenuInput();
         switchStatus(option, baseballGame);
     }
 
@@ -37,7 +41,7 @@ public class MenuState implements GameState {
      * 사용자 입력 값 유효성을 검증합니다
      * @return 유효한 옵션 값
      */
-    public int validInput(){
+    public int validMainMenuInput(){
         while(true) {
             CustomDesign.printMainMenu();
             try {
@@ -56,6 +60,26 @@ public class MenuState implements GameState {
         }
     }
 
+    public void validDifficultyModeInput(BaseballGame baseballGame){
+        while(true) {
+            CustomDesign.printMainMenu();
+            try {
+                //옵션 입력
+                int option = sc.nextInt();
+
+                //유효한 옵션인지 확인
+                DifficultyMode difficultyMode = DifficultyMode.getDifficultyMode(option);
+
+                //난이도에 따른 게임 로직 실행
+                baseballGame.nextStep(new RunState(difficultyMode));
+
+            } catch (InputMismatchException | IllegalArgumentException e) { //정수로 변환할 수 없는 경우
+                System.out.println(CustomDesign.ANSI_RED + "유효한 옵션 번호를 입력해주세요" + CustomDesign.ANSI_RESET);
+                continue;
+            }
+        }
+    }
+
     /**
      * 옵션에 따라 야구 숫자 게임의 상태를 전환 합니다
      *
@@ -68,7 +92,7 @@ public class MenuState implements GameState {
      */
     public void switchStatus(int option, BaseballGame baseballGame){
         switch(option){
-            case 1: baseballGame.nextStep(DifficultyState.getInstance());
+            case 1: validDifficultyModeInput(baseballGame);
             case 2: baseballGame.nextStep(new RecordState());
             case 3: baseballGame.nextStep(new ExitState());
         }

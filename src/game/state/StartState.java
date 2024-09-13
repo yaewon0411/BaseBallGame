@@ -4,7 +4,9 @@ import game.BaseballGame;
 import user.User;
 import util.CustomDesign;
 
-public class StartState{
+import java.util.Optional;
+
+public class StartState implements GameState{
 
     /**
      * 현재 야구 숫자 게임을 진행 중인 유저 객체를 가져와
@@ -18,4 +20,6 @@ public class StartState{
             CustomDesign.printUserWelcomeMessage(user);
             baseballGame.nextStep(MenuState.getInstance());
     }
+
+
 }

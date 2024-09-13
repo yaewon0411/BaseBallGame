@@ -19,12 +19,20 @@ public class MenuState implements GameState {
         return menuState;
     }
 
+    /**
+     * 옵션 입력 검증 및 상태 변경을 관리합니다
+     * @param baseballGame
+     */
     public void handle(BaseballGame baseballGame){
         int option = validInput();
         switchStatus(option, baseballGame);
     }
 
-    //입력 유효성 검증
+
+    /**
+     * 사용자 입력 값 유효성을 검증합니다
+     * @return 유효한 옵션 값
+     */
     public int validInput(){
         while(true) {
             CustomDesign.printMainMenu();
@@ -44,6 +52,16 @@ public class MenuState implements GameState {
         }
     }
 
+    /**
+     * 옵션에 따라 야구 숫자 게임의 상태를 변환합니다
+     *
+     * case 1 : 게임 시작하기
+     * case 2 : 게임 기록 보기
+     * case 3 : 게임 종료
+     *
+     * @param option 유효한 옵션 번호
+     * @param baseballGame 야구 숫자 게임
+     */
     public void switchStatus(int option, BaseballGame baseballGame){
         switch(option){
             case 1: baseballGame.nextStep(new RunState());

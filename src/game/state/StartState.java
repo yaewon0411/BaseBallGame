@@ -16,6 +16,6 @@ public class StartState{
      */
     public void handle(BaseballGame baseballGame, User user) {
             CustomDesign.printUserWelcomeMessage(user);
-            baseballGame.nextStep(new MenuState());
+            baseballGame.nextStep(MenuState.getInstance());
     }
 }

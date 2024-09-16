@@ -1,7 +1,6 @@
 package user;
 
-import game.reoord.GameRecord;
-import game.state.RecordState;
+import game.record.GameRecord;
 
 import java.util.*;
 
@@ -15,7 +14,9 @@ public class User {
     public User(String username) {
         this.username = username;
     }
-
+    public void clearGameRecords(){
+        this.gameRecordList.clear();
+    }
 
     private List<GameRecord> gameRecordList = new ArrayList<>();
     public void setUsername(String username){

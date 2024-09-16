@@ -1,4 +1,6 @@
-package game.state.difficulty;
+package game.difficulty;
+
+import ex.InvalidInputException;
 
 import java.util.Arrays;
 
@@ -28,7 +30,7 @@ public enum DifficultyMode {
                .filter(v -> v.option == option)
                .findFirst()
                .orElseThrow(
-                       IllegalArgumentException::new
+                       () -> new InvalidInputException("제공하지 않는 난이도 옵션입니다")
                );
     }
     public static DifficultyMode findByLen(int len){

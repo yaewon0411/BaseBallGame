@@ -22,8 +22,6 @@ public class ExitState implements GameState{
         CustomDesign.printExitMessage();
         //기록 다 지우기
         baseballGame.clearHistory();
-        //스캐너 닫기
-        sc.close();
         //종료
         baseballGame.exit();
     }

@@ -20,6 +20,7 @@ public class BaseballGame {
 
     public void exit() {
         isRunning = false;
+        sc.close();
     }
 
     private List<User> userList = new ArrayList<>();

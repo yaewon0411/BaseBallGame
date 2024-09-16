@@ -13,8 +13,7 @@ public interface GameState {
      * 현재 게임 상태에 대한 처리를 수행합니다
      *
      * @param baseballGame 현재의 야구 게임 인스턴스
-     * @param user 현재 사용자
      * @param sc 사용자 입력을 받기 위한 Scanner 객체
      */
-    void handle(BaseballGame baseballGame, User user, Scanner sc);
+    void handle(BaseballGame baseballGame, Scanner sc);
 }

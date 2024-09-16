@@ -2,8 +2,8 @@ package game.state;
 
 import game.BaseballGame;
 import game.record.GameRecord;
-import game.state.difficulty.DifficultyMode;
-import game.state.difficulty.DifficultyState;
+import game.difficulty.DifficultyMode;
+import game.logic.NumberBaseballLogic;
 import game.state.menu.MenuState;
 import user.User;
 import util.CustomDesign;
@@ -12,19 +12,19 @@ import java.util.Scanner;
 
 public class RunState implements GameState {
 
-    private final DifficultyState difficultyState;
-    public RunState(DifficultyMode difficultyMode){
-        this.difficultyState = new DifficultyState(difficultyMode.getLen());
-    }
+    private final NumberBaseballLogic numberBaseballLogic;
     private static final String INPUT_PROMPT = " 자리 수를 입력해주세요: ";
 
+
+    public RunState(DifficultyMode difficultyMode){
+        this.numberBaseballLogic = new NumberBaseballLogic(difficultyMode.getLen());
+    }
+
     @Override
-    public void handle(BaseballGame baseballGame, User user, Scanner sc) {
-
-        GameRecord gameRecord = initialize(user);
+    public void handle(BaseballGame baseballGame, Scanner sc) {
+        GameRecord gameRecord = initialize(baseballGame.getCurrentUser());
         playGame(sc, gameRecord);
-        finishGame(baseballGame, user, gameRecord);
-
+        finishGame(baseballGame, baseballGame.getCurrentUser(), gameRecord);
     }
 
     private void playGame(Scanner sc, GameRecord gameRecord){
@@ -47,15 +47,15 @@ public class RunState implements GameState {
 
 
     private GameRecord initialize(User user){
-        GameRecord gameRecord = new GameRecord(user.getGameNumber(), difficultyState.getMode());
-        difficultyState.generateRandomNumber();
+        GameRecord gameRecord = new GameRecord(user.getGameNumber(), numberBaseballLogic.getMode());
+        numberBaseballLogic.generateRandomNumber();
         return gameRecord;
     }
 
     private boolean processUserInput(Scanner sc){
-        System.out.print(CustomDesign.ANSI_PINK + difficultyState.getLen() + INPUT_PROMPT + CustomDesign.ANSI_RESET);
+        System.out.print(CustomDesign.ANSI_PINK + numberBaseballLogic.getLen() + INPUT_PROMPT + CustomDesign.ANSI_RESET);
         String input = sc.nextLine();
-        return difficultyState.validateAnswer(input);
+        return numberBaseballLogic.validateAnswer(input);
     }
 
 }

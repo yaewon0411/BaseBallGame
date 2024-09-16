@@ -9,12 +9,22 @@ import javax.print.attribute.standard.OutputDeviceAssigned;
 import java.util.Optional;
 import java.util.Scanner;
 
+/**
+ * 숫자 야구 게임의 시작 상태를 관리하는 클래스입니다
+ * 게임 시작 시 사용자 로그인 및 초기 메뉴 표시를 담당합니다
+ */
 public class StartState implements GameState{
 
     public static StartState startState;
 
     private StartState(){
     }
+
+    /**
+     * StartState의 유일한 인스턴스를 반환합니다
+     *
+     * @return StartState의 인스턴스
+     */
     public static synchronized StartState getInstance(){
         if(startState==null) {
             startState = new StartState();
@@ -23,10 +33,10 @@ public class StartState implements GameState{
     }
 
     /**
-     * 현재 야구 숫자 게임을 진행 중인 유저 객체를 가져와
-     * 환영 메시지와 메뉴를 출력합니다
+     * 야구 숫자 게임을 시작하고, 사용자 로그인 과정을 처리합니다
+     * 환영 메시지를 표시하고, 사용자 입력을 처리한 후 적절한 다음 상태로 전환합니다
      *
-     * @param baseballGame 야구 숫자 게임
+     * @param baseballGame 야구 숫자 게임 객체
      * @param sc Scanner 객체
      */
     public void handle(BaseballGame baseballGame,  Scanner sc) {
@@ -41,6 +51,14 @@ public class StartState implements GameState{
         }
     }
 
+    /**
+     * 사용자 입력을 처리합니다
+     * 사용자가 닉네임을 입력하거나 'exit'를 입력할 때까지 반복합니다
+     *
+     * @param baseballGame 야구 숫자 게임 객체
+     * @param sc Scanner 객체
+     * @return 입력된 사용자 닉네임, 또는 'exit' 입력 시 null
+     */
     private String processUserInput(BaseballGame baseballGame, Scanner sc){
         while (true) {
             String input = sc.nextLine().trim();
@@ -60,6 +78,14 @@ public class StartState implements GameState{
         }
     }
 
+    /**
+     * 사용자 로그인을 처리합니다
+     * 입력된 username으로 기존 사용자를 찾거나 새 사용자를 생성합니다
+     *
+     * @param baseballGame 야구 숫자 게임 객체
+     * @param username 입력된 사용자 닉네임
+     * @return 로그인된 User 객체
+     */
     private User login(BaseballGame baseballGame, String username){
         User currentUser = baseballGame.getUserList().stream()
                 .filter(u -> u.getUsername().equals(username))
@@ -72,8 +98,6 @@ public class StartState implements GameState{
         baseballGame.setCurrentUser(currentUser);
         return currentUser;
     }
-
-
 
 
 }

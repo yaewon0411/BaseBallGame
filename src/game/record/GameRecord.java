@@ -1,10 +1,6 @@
-package game.reoord;
+package game.record;
 
-import game.state.difficulty.DifficultyMode;
-import user.User;
-
-import java.util.HashMap;
-import java.util.Map;
+import game.difficulty.DifficultyMode;
 
 public class GameRecord {
 

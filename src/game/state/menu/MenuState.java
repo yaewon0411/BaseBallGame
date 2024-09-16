@@ -7,7 +7,6 @@ import game.difficulty.DifficultyMode;
 import util.CustomDesign;
 
 import java.util.HashMap;
-import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.function.BiConsumer;

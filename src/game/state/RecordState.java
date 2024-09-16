@@ -1,32 +1,45 @@
 package game.state;
 
 import game.BaseballGame;
-import game.reoord.GameRecord;
+import game.record.GameRecord;
+import game.state.menu.MenuState;
 import user.User;
+import util.CustomDesign;
 
-/*
-* < 게임 기록 보기 >
-1번째 게임 : 시도 횟수 - 14
-2번째 게임 : 시도 횟수 - 9
-3번째 게임 : 시도 횟수 - 12
-* */
+import java.util.List;
+import java.util.Scanner;
+
+/**
+ * 게임 기록을 표시하는 상태를 관리하는 클래스입니다
+ */
 public class RecordState implements GameState{
 
-    @Override
-    public void handle(BaseballGame baseballGame, User user) {
-        System.out.println(user.getUsername()+"님의 게임 기록은 다음과 같습니다");
+    private static RecordState recordState;
+    private RecordState(){}
 
-        if(user.getGameRecordList().isEmpty())
-            System.out.println("======게임을 진행한 이력이 없습니다=======");
-
-        else {
-            int i = 1;
-            for (GameRecord record : user.getGameRecordList()) {
-                System.out.println(i++ + "번째 게임 [" + record.getDifficultyMode() + "] 시도 횟수 : " + record.getAttemptCnt());
-            }
+    /**
+     * RecordState의 유일한 인스턴스를 반환합니다
+     *
+     * @return RecordState 인스턴스
+     */
+    public static RecordState getInstance(){
+        if(recordState==null){
+            recordState = new RecordState();
         }
+        return recordState;
+    }
+
+    @Override
+    public void handle(BaseballGame baseballGame, Scanner sc) {
+        User user = baseballGame.getCurrentUser();
+        List<GameRecord> records = user.getGameRecordList();
+
+        CustomDesign.printUserRecords(user, records);
+        System.out.println(CustomDesign.ANSI_CYAN +  "Enter 키를 누르면 메뉴로 돌아갑니다..." + CustomDesign.ANSI_RESET);
+        sc.nextLine();
 
         //다시 메뉴 옵션 출력
         baseballGame.nextStep(MenuState.getInstance());
     }
+
 }

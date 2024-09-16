@@ -95,7 +95,7 @@ public class NumberBaseballLogic {
     }
 
     /**
-     * 사용자 입력을 검증하고 정답과 비교하여 결과를 계산합니다
+     * 사용자의 입력을 검증하고 답과 일치하는지 여부를 반환합니다
      *
      * @param input 사용자가 입력한 숫자 문자열
      * @return 사용자의 입력이 정답과 일치하면 true, 그렇지 않으면 false
@@ -106,11 +106,24 @@ public class NumberBaseballLogic {
         //입력 값 검증
         try {
              inputSet = validateInput(input);
-        }catch(Exception e){
+        }catch(InvalidInputException e){
             CustomDesign.printExceptionMessage(e.getMessage());
             return false;
         }
 
+        ResultCount resultCount = calculateResult(inputSet);
+        resultCount.printResult();
+
+        return resultCount.getStrikeCnt() == LEN;
+    }
+
+    /**
+     * 사용자 입력과 정답을 비교하여 결과를 계산합니다
+     *
+     * @param inputSet 사용자가 입력한 숫자 집합
+     * @return 스트라이크, 볼, 아웃 개수를 포함한 ResultCount 객체
+     */
+    private ResultCount calculateResult(Set<Long> inputSet){
         //정답과 비교
         Iterator<Long> inputIter = inputSet.iterator();
         Iterator<Long> answerIter = answers.iterator();
@@ -123,13 +136,11 @@ public class NumberBaseballLogic {
             if(inputNum.equals(answerNum)) strikeCnt++;
             else if(answers.contains(inputNum)) ballCnt++;
         }
-
         outCnt = LEN - strikeCnt - ballCnt;
 
-        //결과 메시지 출력
-        CustomDesign.printResult(strikeCnt, ballCnt, outCnt);
-
-        return strikeCnt == LEN;
+        return new ResultCount(strikeCnt, ballCnt, outCnt);
     }
+
+
 
 }

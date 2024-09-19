@@ -33,7 +33,7 @@ public class NumberBaseballLogic {
      *
      * @return 랜덤 넘버 길이에 따른 난이도 (EASY, MEDIUM, HARD)
      */
-    public DifficultyMode getMode(){
+    public DifficultyMode getMode() throws NoSuchElementException{
         return DifficultyMode.findByLen(LEN);
     }
 

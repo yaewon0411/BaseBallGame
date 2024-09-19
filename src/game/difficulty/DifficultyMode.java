@@ -3,6 +3,7 @@ package game.difficulty;
 import ex.InvalidInputException;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 public enum DifficultyMode {
     EASY(1, 3),
@@ -37,6 +38,8 @@ public enum DifficultyMode {
         return Arrays.stream(values())
                 .filter(v -> v.len == len)
                 .findFirst()
-                .get();
+                .orElseThrow(
+                        () -> new NoSuchElementException("제공하지 않는 난이도 길이입니다")
+                );
     }
 }

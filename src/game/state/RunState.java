@@ -1,5 +1,6 @@
 package game.state;
 
+import ex.InvalidInputException;
 import game.BaseballGame;
 import game.record.GameRecord;
 import game.difficulty.DifficultyMode;
@@ -8,6 +9,7 @@ import game.state.menu.MenuState;
 import user.User;
 import util.CustomDesign;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -81,9 +83,14 @@ public class RunState implements GameState {
      * @return 초기화된 GameRecord 객체
      */
     private GameRecord initialize(User user){
-        GameRecord gameRecord = new GameRecord(user.getGameNumber(), numberBaseballLogic.getMode());
-        numberBaseballLogic.generateRandomNumber();
-        return gameRecord;
+        try {
+            GameRecord gameRecord = new GameRecord(user.getGameNumber(), numberBaseballLogic.getMode());
+            numberBaseballLogic.generateRandomNumber();
+            return gameRecord;
+        }catch(NoSuchElementException e){
+            CustomDesign.printExceptionMessage(e.getMessage());
+            return null;
+        }
     }
 
 

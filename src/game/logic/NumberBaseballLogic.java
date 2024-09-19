@@ -32,6 +32,7 @@ public class NumberBaseballLogic {
      * 현재 게임의 난이도 모드를 반환합니다
      *
      * @return 랜덤 넘버 길이에 따른 난이도 (EASY, MEDIUM, HARD)
+     * @throws InvalidInputException 현재 설정된 숫자 길이에 해당하는 난이도가 없을 경우 발생
      */
     public DifficultyMode getMode() throws NoSuchElementException{
         return DifficultyMode.findByLen(LEN);

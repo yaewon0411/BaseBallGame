@@ -80,7 +80,7 @@ public class RunState implements GameState {
      * 새로운 GameRecord 객체를 생성하고 랜덤 숫자를 생성합니다
      *
      * @param user 현재 사용자
-     * @return 초기화된 GameRecord 객체
+     * @return 초기화된 GameRecord 객체, 초기화 실패시 null
      */
     private GameRecord initialize(User user){
         try {

@@ -70,9 +70,7 @@ public class NumberBaseballLogic {
      */
     public Set<Long> validateInput(String input) throws InvalidInputException {
 
-        if (input.length() != LEN) {
-            throw new InvalidInputException(LEN+" 자리수만큼 입력해야 합니다");
-        }
+
 
         //String -> Long 파싱 및 길이 검증, 숫자 검증
         Set<Long> inputSet = new LinkedHashSet<>();
@@ -88,6 +86,9 @@ public class NumberBaseballLogic {
                 }
             } catch (NumberFormatException e) {
                 throw new InvalidInputException("유효하지 않은 입력입니다. 1부터 9까지의 정수만 입력해야 합니다.");
+            }
+            if (input.length() != LEN) {
+                throw new InvalidInputException(LEN+" 자리수만큼 입력해야 합니다");
             }
         }
 

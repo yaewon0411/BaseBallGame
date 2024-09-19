@@ -5,6 +5,9 @@ import user.User;
 
 import java.util.List;
 
+/**
+ * 게임 중 콘솔에 표시되는 출력 문구를 커스텀하는 클래스입니다
+ */
 public class CustomDesign {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";

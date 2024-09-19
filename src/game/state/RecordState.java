@@ -29,6 +29,13 @@ public class RecordState implements GameState{
         return recordState;
     }
 
+    /**
+     * 게임 기록을 표시하고 사용자 입력을 처리합니다
+     * 현재 사용자의 게임 기록을 표시하고, 사용자가 Enter 키를 누르면 메뉴 상태(MenuState)로 돌아갑니다
+     *
+     * @param baseballGame 현재 진행 중인 야구 게임 인스턴스
+     * @param sc 사용자 입력을 받기 위한 Scanner 객체
+     */
     @Override
     public void handle(BaseballGame baseballGame, Scanner sc) {
         User user = baseballGame.getCurrentUser();

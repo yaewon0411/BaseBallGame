@@ -1,5 +1,6 @@
 package game.state;
 
+import ex.GameInitializationException;
 import ex.InvalidInputException;
 import game.BaseballGame;
 import game.record.GameRecord;
@@ -39,9 +40,19 @@ public class RunState implements GameState {
      */
     @Override
     public void handle(BaseballGame baseballGame, Scanner sc) {
-        GameRecord gameRecord = initialize(baseballGame.getCurrentUser());
-        playGame(sc, gameRecord);
-        finishGame(baseballGame, baseballGame.getCurrentUser(), gameRecord);
+        User currentUser = baseballGame.getCurrentUser();
+        GameRecord gameRecord = null;
+        boolean isGameInitialized = false;
+        try {
+            gameRecord = initialize(currentUser);
+            isGameInitialized = true;
+            playGame(sc, gameRecord);
+        }catch(GameInitializationException e){
+            CustomDesign.printExceptionMessage(e.getMessage());
+        }finally {
+            if(isGameInitialized)  finishGame(baseballGame, baseballGame.getCurrentUser(), gameRecord);
+            else baseballGame.nextStep(MenuState.getInstance());
+        }
     }
 
     /**
@@ -81,15 +92,15 @@ public class RunState implements GameState {
      *
      * @param user 현재 사용자
      * @return 초기화된 GameRecord 객체, 초기화 실패시 null
+     * @throws GameInitializationException 게임 중 초기화 관련 오류 발생 시 throw
      */
-    private GameRecord initialize(User user){
+    private GameRecord initialize(User user) throws GameInitializationException{
         try {
             GameRecord gameRecord = new GameRecord(user.getGameNumber(), numberBaseballLogic.getMode());
             numberBaseballLogic.generateRandomNumber();
             return gameRecord;
         }catch(NoSuchElementException e){
-            CustomDesign.printExceptionMessage(e.getMessage());
-            return null;
+            throw new GameInitializationException("게임 레코드 초기화 중 오류가 발생했습니다: "+e.getMessage(), e);
         }
     }
 

@@ -4,6 +4,7 @@ package game;
 import game.state.GameState;
 import game.state.StartState;
 import user.User;
+import user.UserManager;
 
 import java.util.*;
 
@@ -22,7 +23,7 @@ public class BaseballGame {
     /** 현재 게임을 진행 중인 사용자 */
     private User currentUser;
     /** 게임에 참여한 모든 사용자 목록 */
-    private List<User> userList = new ArrayList<>();
+    private final UserManager userManager;
 
 
     /**
@@ -32,6 +33,11 @@ public class BaseballGame {
     public BaseballGame() {
         sc = new Scanner(System.in);
         isRunning = true;
+        userManager = UserManager.getInstance();
+    }
+
+    public UserManager getUserManager() {
+        return userManager;
     }
 
     /**
@@ -40,14 +46,6 @@ public class BaseballGame {
     public void exit() {
         isRunning = false;
         sc.close();
-    }
-
-    /**
-     * 모든 사용자 목록을 반환합니다
-     * @return 사용자 목록
-     */
-    public List<User> getUserList(){
-        return this.userList;
     }
 
     /**
@@ -64,8 +62,7 @@ public class BaseballGame {
      * 사용자 목록을 초기화합니다
      */
     public void clearHistory(){
-        this.userList.forEach(User::clearGameRecords);
-        this.userList.clear();
+        userManager.clearAllUser();
     }
 
     /**

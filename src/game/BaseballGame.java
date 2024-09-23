@@ -22,7 +22,7 @@ public class BaseballGame {
     private boolean isRunning;
     /** 현재 게임을 진행 중인 사용자 */
     private User currentUser;
-    /** 게임에 참여한 모든 사용자 목록 */
+    /** 게임에 참여한 모든 사용자를 관리하는 객체 */
     private final UserManager userManager;
 
 
@@ -49,8 +49,8 @@ public class BaseballGame {
     }
 
     /**
-     * 모든 사용자의 목록을 반환합니다.
-     * @return 사용자 목록
+     * 현재 게임 중인 사용자를 반환합니다
+     * @return 현재 사용자
      */
     public User getCurrentUser() {
         return currentUser;
@@ -97,7 +97,5 @@ public class BaseballGame {
         BaseballGame game = new BaseballGame();
         game.start();
     }
-
-
 
 }

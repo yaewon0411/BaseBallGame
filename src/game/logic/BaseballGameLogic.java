@@ -56,10 +56,12 @@ public class BaseballGameLogic {
             answers.add(random.nextLong(MIN_NUMBER, MAX_NUMBER));
         }
         System.out.println("랜덤 넘버 생성 완료 ✨");
-        for (Long answer : answers) {
-            System.out.print(answer +" ");
-        }
-        System.out.println();
+
+        //디버깅 용도 랜덤 넘버 출력
+//        for (Long answer : answers) {
+//            System.out.print(answer +" ");
+//        }
+//        System.out.println();
     }
 
     /**

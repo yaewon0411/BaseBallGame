@@ -5,11 +5,12 @@ import ex.InvalidInputException;
 import game.BaseballGame;
 import game.record.GameRecord;
 import game.difficulty.DifficultyMode;
-import game.logic.NumberBaseballLogic;
+import game.logic.BaseballGameLogic;
 import game.state.menu.MenuState;
 import user.User;
 import util.CustomDesign;
 
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -19,7 +20,7 @@ import java.util.Scanner;
  */
 public class RunState implements GameState {
 
-    private final NumberBaseballLogic numberBaseballLogic;
+    private final BaseballGameLogic baseballGameLogic;
     private static final String INPUT_PROMPT = " 자리 수를 입력해주세요: ";
 
     /**
@@ -28,7 +29,7 @@ public class RunState implements GameState {
      * @param difficultyMode 게임의 난이도 모드
      */
     public RunState(DifficultyMode difficultyMode){
-        this.numberBaseballLogic = new NumberBaseballLogic(difficultyMode.getLen());
+        this.baseballGameLogic = new BaseballGameLogic(difficultyMode.getLen());
     }
 
     /**
@@ -66,10 +67,17 @@ public class RunState implements GameState {
         while(true){
             //입력 실패하면 재시작
             gameRecord.increaseAttemptCnt();
-            if (!processUserInput(sc)) {
+            try {
+                if (!processUserInput(sc)) {
+                    continue;
+                }
+            }catch(InvalidInputException e){
+                CustomDesign.printExceptionMessage(e.getMessage());
                 continue;
             }
             //성공하면 반복문 종료
+            gameRecord.setFinished(true);
+            gameRecord.setFinishedDate(LocalDateTime.now());
             break;
         }
     }
@@ -96,8 +104,8 @@ public class RunState implements GameState {
      */
     private GameRecord initialize(User user) throws GameInitializationException{
         try {
-            GameRecord gameRecord = new GameRecord(user.getGameNumber(), numberBaseballLogic.getMode());
-            numberBaseballLogic.generateRandomNumber();
+            GameRecord gameRecord = new GameRecord(user.getGameNumber(), baseballGameLogic.getMode());
+            baseballGameLogic.generateRandomNumber();
             return gameRecord;
         }catch(NoSuchElementException e){
             throw new GameInitializationException("게임 레코드 초기화 중 오류가 발생했습니다: "+e.getMessage(), e);
@@ -112,9 +120,11 @@ public class RunState implements GameState {
      * @return 정답을 맞췄으면 true, 그렇지 않으면 false
      */
     private boolean processUserInput(Scanner sc){
-        System.out.print(CustomDesign.ANSI_PINK + numberBaseballLogic.getLen() + INPUT_PROMPT + CustomDesign.ANSI_RESET);
+        System.out.print(CustomDesign.ANSI_PINK + baseballGameLogic.getLen() + INPUT_PROMPT + CustomDesign.ANSI_RESET);
         String input = sc.nextLine();
-        return numberBaseballLogic.validateAnswer(input);
+        if(input.isEmpty())
+            throw new InvalidInputException("숫자를 입력해주세요");
+        return baseballGameLogic.validateAnswer(input);
     }
 
 }

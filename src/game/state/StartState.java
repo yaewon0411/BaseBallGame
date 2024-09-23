@@ -3,6 +3,7 @@ package game.state;
 import game.BaseballGame;
 import game.state.menu.MenuState;
 import user.User;
+import user.UserManager;
 import util.CustomDesign;
 
 import javax.print.attribute.standard.OutputDeviceAssigned;
@@ -87,14 +88,15 @@ public class StartState implements GameState{
      * @return 로그인된 User 객체
      */
     private User login(BaseballGame baseballGame, String username){
-        User currentUser = baseballGame.getUserList().stream()
-                .filter(u -> u.getUsername().equals(username))
-                .findFirst()
-                .orElseGet(() -> {
-                    User user = new User(username);
-                    baseballGame.getUserList().add(user);
-                    return user;
-                });
+        UserManager userManager = baseballGame.getUserManager();
+        User currentUser = userManager.findByUsername(username)
+                .orElseGet(
+                        () -> {
+                            User newUser = new User(username);
+                            userManager.addUser(newUser);
+                            return newUser;
+                        }
+                );
         baseballGame.setCurrentUser(currentUser);
         return currentUser;
     }

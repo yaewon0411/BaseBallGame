@@ -40,10 +40,16 @@ public class RankingState implements GameState {
      */
     @Override
     public void handle(BaseballGame baseballGame, Scanner sc) {
+        //1. baseballGame의 userManager에서 전체 유저 리스트 꺼내기
         List<User> userList = baseballGame.getUserManager().getUserList();
+
+        //2. 유저 리스트를 사용해 랭킹에 내보낼 UserRanking 리스트 구하기
         List<UserRanking> rankingList = getUserRankingList(userList);
+
+        //3. 랭킹 출력하기
         CustomDesign.printRanking(rankingList);
 
+        //4. MenuState으로 전환하기
         System.out.println(CustomDesign.ANSI_YELLOW +  "Enter 키를 누르면 메뉴로 돌아갑니다..." + CustomDesign.ANSI_RESET);
         sc.nextLine();
 

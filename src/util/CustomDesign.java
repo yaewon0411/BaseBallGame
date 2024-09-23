@@ -131,16 +131,21 @@ public class CustomDesign {
         System.out.printf("%-6s %-10s %-8s %-9s %-9s %-8s\n", "순위", "이름", "점수", "난이도", "시도횟수", "진행 날짜");
         System.out.println("------------------------------------------------");
 
-        for (int i = 0; i < rankingList.size(); i++) {
-            UserRanking ranking = rankingList.get(i);
-            String rankColor = getRankColor(i);
-            System.out.printf(rankColor + "%-6d" + ANSI_RESET + " %-10s %-8d %-9s %-8s %-8s\n",
-                    i + 1,
-                    ranking.getUsername(),
-                    ranking.getScore(),
-                    ranking.getDifficultyMode(),
-                    "   "+ranking.getAttemptCnt(),
-                    "  "+ranking.getFormattedFinishedDate());
+        if(rankingList.isEmpty()){
+            System.out.println(ANSI_YELLOW+ "데이터가 없습니다."+ANSI_RESET);
+        }
+        else {
+            for (int i = 0; i < rankingList.size(); i++) {
+                UserRanking ranking = rankingList.get(i);
+                String rankColor = getRankColor(i);
+                System.out.printf(rankColor + "%-6d" + ANSI_RESET + " %-10s %-8d %-9s %-8s %-8s\n",
+                        i + 1,
+                        ranking.getUsername(),
+                        ranking.getScore(),
+                        ranking.getDifficultyMode(),
+                        "   " + ranking.getAttemptCnt(),
+                        "  " + ranking.getFormattedFinishedDate());
+            }
         }
 
         System.out.println(ANSI_CYAN + "================================================" + ANSI_RESET);

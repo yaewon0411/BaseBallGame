@@ -44,6 +44,9 @@ public class RankingState implements GameState {
         List<UserRanking> rankingList = getUserRankingList(userList);
         CustomDesign.printRanking(rankingList);
 
+        System.out.println(CustomDesign.ANSI_YELLOW +  "Enter 키를 누르면 메뉴로 돌아갑니다..." + CustomDesign.ANSI_RESET);
+        sc.nextLine();
+
         baseballGame.nextStep(MenuState.getInstance());
     }
 

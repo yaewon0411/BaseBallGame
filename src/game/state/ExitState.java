@@ -14,7 +14,7 @@ public class ExitState implements GameState{
     public static ExitState exitState;
     private ExitState(){}
 
-    public static ExitState getInstance(){
+    public static synchronized ExitState getInstance(){
         if(exitState==null){
             exitState = new ExitState();
         }

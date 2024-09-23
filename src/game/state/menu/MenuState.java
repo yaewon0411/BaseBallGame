@@ -4,6 +4,7 @@ import ex.InvalidInputException;
 import game.BaseballGame;
 import game.state.*;
 import game.difficulty.DifficultyMode;
+import game.state.ranking.RankingState;
 import util.CustomDesign;
 
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class MenuState implements GameState {
     private MenuStatus currentStatus;
 
     private static final int MIN_OPTION = 1;
-    private static final int MAX_OPTION = 3;
+    private static final int MAX_OPTION = 4;
 
     private static final String INPUT_MISMATCH_EXCEPTION_MESSAGE = "유효한 옵션 번호를 입력해주세요";
 
@@ -35,7 +36,8 @@ public class MenuState implements GameState {
         this.optionStates = new HashMap<>();
         optionStates.put(1, this::validateDifficultyModeInput);
         optionStates.put(2, (game, sc) -> game.nextStep(RecordState.getInstance()));
-        optionStates.put(3, (game, sc) -> game.nextStep(LogoutState.getInstance()));
+        optionStates.put(3, (game, sc) -> game.nextStep(RankingState.getInstance()));
+        optionStates.put(4, (game, sc) -> game.nextStep(LogoutState.getInstance()));
         currentStatus = MenuStatus.MAIN_MENU;
     }
     public static synchronized MenuState getInstance(){

@@ -1,6 +1,7 @@
 package util;
 
 import game.record.GameRecord;
+import game.state.ranking.UserRanking;
 import user.User;
 
 import java.util.List;
@@ -22,6 +23,9 @@ public class CustomDesign {
     public static final String ANSI_BOLD = "\u001B[1m";
     public static final String ANSI_UNDERLINE = "\u001B[4m";
     public static final String ANSI_BACKGROUND_RED = "\u001B[41m";
+    public static final String ANSI_GOLD = "\u001B[33m";
+    public static final String ANSI_SILVER = "\u001B[37m";
+    public static final String ANSI_BRONZE = "\u001B[31m";
 
     public static void printStartMessage() {
         System.out.println(ANSI_CYAN + "╔════════════════════════════════════════════════╗" + ANSI_RESET);
@@ -66,11 +70,12 @@ public class CustomDesign {
 
     public static void printMainMenu() {
         System.out.println(ANSI_YELLOW + "┌───────────────────────────────┐" + ANSI_RESET);
-        System.out.println(ANSI_YELLOW + "│     야구 숫자 게임 메뉴          │" + ANSI_RESET);
+        System.out.println(ANSI_YELLOW + "│     야구 숫자 게임 메뉴        │" + ANSI_RESET);
         System.out.println(ANSI_YELLOW + "├───────────────────────────────┤" + ANSI_RESET);
-        System.out.println(ANSI_YELLOW + "│ " + ANSI_GREEN + "1.  게임 시작하기🤍             " + ANSI_YELLOW + "│" + ANSI_RESET);
-        System.out.println(ANSI_YELLOW + "│ " + ANSI_BLUE + "2.  게임 기록 보기🤍            " + ANSI_YELLOW + "│" + ANSI_RESET);
-        System.out.println(ANSI_YELLOW + "│ " + ANSI_RED + "3.  로그아웃 하기🤍             " + ANSI_YELLOW + "│" + ANSI_RESET);
+        System.out.println(ANSI_YELLOW + "│ " + ANSI_GREEN + "1.  게임 시작하기 🎮           " + ANSI_YELLOW + "│" + ANSI_RESET);
+        System.out.println(ANSI_YELLOW + "│ " + ANSI_BLUE + "2.  게임 기록 보기 📊          " + ANSI_YELLOW + "│" + ANSI_RESET);
+        System.out.println(ANSI_YELLOW + "│ " + ANSI_PURPLE + "3.  전체 순위 보기 🏆          " + ANSI_YELLOW + "│" + ANSI_RESET);
+        System.out.println(ANSI_YELLOW + "│ " + ANSI_RED + "4.  로그아웃 하기 🚪           " + ANSI_YELLOW + "│" + ANSI_RESET);
         System.out.println(ANSI_YELLOW + "└───────────────────────────────┘" + ANSI_RESET);
         System.out.print(ANSI_CYAN + "원하는 옵션의 번호를 입력하세요: " + ANSI_RESET);
     }
@@ -119,6 +124,35 @@ public class CustomDesign {
         }
 
         System.out.println("================================");
+    }
+
+    public static void printRanking(List<UserRanking> rankingList) {
+        System.out.println(ANSI_CYAN + "================= 전체 순위 =================" + ANSI_RESET);
+        System.out.printf("%-6s %-10s %-8s %-9s %-9s %-8s\n", "순위", "이름", "점수", "난이도", "시도횟수", "진행 날짜");
+        System.out.println("------------------------------------------------");
+
+        for (int i = 0; i < rankingList.size(); i++) {
+            UserRanking ranking = rankingList.get(i);
+            String rankColor = getRankColor(i);
+            System.out.printf(rankColor + "%-6d" + ANSI_RESET + " %-10s %-8d %-9s %-8s %-8s\n",
+                    i + 1,
+                    ranking.getUsername(),
+                    ranking.getScore(),
+                    ranking.getDifficultyMode(),
+                    "   "+ranking.getAttemptCnt(),
+                    "  "+ranking.getFormattedFinishedDate());
+        }
+
+        System.out.println(ANSI_CYAN + "================================================" + ANSI_RESET);
+    }
+
+    private static String getRankColor(int rank) {
+        return switch (rank) {
+            case 0 -> ANSI_GOLD;
+            case 1 -> ANSI_SILVER;
+            case 2 -> ANSI_BRONZE;
+            default -> ANSI_WHITE;
+        };
     }
 
 

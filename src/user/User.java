@@ -10,6 +10,7 @@ import java.util.*;
  */
 public class User {
     private String username;
+    private List<GameRecord> gameRecordList = new ArrayList<>();
 
     public User(String username) {
         this.username = username;
@@ -21,8 +22,6 @@ public class User {
     public void clearGameRecords(){
         this.gameRecordList.clear();
     }
-
-    private List<GameRecord> gameRecordList = new ArrayList<>();
 
     /**
      * 사용자 이름을 설정합니다

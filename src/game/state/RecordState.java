@@ -22,7 +22,7 @@ public class RecordState implements GameState{
      *
      * @return RecordState 인스턴스
      */
-    public static RecordState getInstance(){
+    public static synchronized RecordState getInstance(){
         if(recordState==null){
             recordState = new RecordState();
         }
